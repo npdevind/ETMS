@@ -99,6 +99,8 @@ router.get('/developer', checkAdminLogin, middleHandler, user.loadDeveloperPage)
 const project = require('../controller/admin/projectController');
 router.get('/project/:id?', checkAdminLogin, middleHandler, project.loadProjectPage);
 router.post('/add-project', checkAdminLogin, middleHandler, project.addNewProject);
+router.get('/add-developer-for-project', checkAdminLogin, middleHandler, project.addDevForProject);
+
 
 
 

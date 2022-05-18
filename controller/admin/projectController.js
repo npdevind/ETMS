@@ -83,3 +83,13 @@ exports.addNewProject = async function(req,res){
         return res.redirect("project");
     }
 }
+
+
+exports.addDevForProject = async function(req,res){
+    console.log(req.query.projectId);
+    var getExistUser = await models.UserProject.findAll({where:{project_id : req.query.projectId}});
+    console.log(getExistUser);
+    var userListArray = [];
+    var UserList = await models.Users.findAll({where :{id: {[Op.notIn]:[]}}})
+
+}

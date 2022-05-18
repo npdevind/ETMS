@@ -35,7 +35,7 @@
       <div class="col-sm-10">
         <!-- Category -->
         <div class="single category">
-          <% if(projectData){%>
+          <% if(projectData){ %>
               <h4 style="display: inline-block;"> <%= projectData.project_name %> </h4>
                 <div class="row rowSwitch"> 
                   <div class="material-switch pull-right">
@@ -49,7 +49,7 @@
               <p><%= projectData.project_des %></p>
               <hr>
               <h4 style="display: inline-block;"> Assign Developer </h4>
-              <button class="activeStatus" id="addDeveloper"><i class="fa fa-plus-circle"></i> Add Developer</button>
+              <button class="activeStatus" id="addDeveloper" data_pro_id="<%= projectData.project_id  %>"><i class="fa fa-plus-circle"></i> Add Developer</button>
               <div class="row">
                 <!-- Team member -->
                 <div class="col-xs-12 col-sm-6 col-md-4">
@@ -59,12 +59,11 @@
                               <% if(assignDev.length > 0){ %>
                                 <div class="card">
                                   <div class="card-body text-center">
-                                      <p><img class=" img-fluid" src="https://sunlimetech.com/portfolio/boot4menu/assets/imgs/team/img_01.png" alt="card image"></p>
+                                      <p><img class="img-fluid" src="" alt="card image"></p>
                                       <h4 class="card-title">Sunlimetech</h4>
                                       <p class="card-text">This is basic card with image on top, title, description and button.</p>
-                                      <a href="https://www.fiverr.com/share/qb8D02" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
                                   </div>
-                              </div>
+                                </div>
                               <% } %>                                
                             </div>
                         </div>
@@ -119,7 +118,13 @@
     
 <script>
   $('#addDeveloper').click(function(){
-    
+    var projectId = $(this).attr('data_pro_id');
+    $.ajax({
+      url: "<%= adminbaseurl %>add-developer-for-project",
+      data :  {projectId : projectId}, 
+      success: function(result){
+        console.log(result);
+    }});
   })
 </script>
 
