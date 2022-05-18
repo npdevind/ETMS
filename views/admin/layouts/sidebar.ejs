@@ -1,0 +1,58 @@
+<nav id="sidebar" class="sidebar-wrapper">
+    <div class="sidebar-content">
+        <div class="sidebar-brand">
+            <a href="<%=adminbaseurl%>dashboard">ETMS</a>
+            <div id="close-sidebar">
+                <i class="fas fa-times"></i>
+            </div>
+        </div>
+        <div class="sidebar-header">
+            <div class="user-pic">
+                <%
+                var image = 'Admin/'+sessionUserId+'/'+sessionUserImage;
+                if(helper.isFileExistsIn(image)) image = adminbaseurl +'web-contents/'+  image;
+                else image = baseurl + "admin/web-contents/user.png";
+                %>
+                <img src="<%= image %>" class="oc-profile-picture" style="width: 50px; height: 50px;border-radius: 25px;">
+            </div>
+            <div class="user-info">
+                <span class="user-name">
+                    <a href="<%=adminbaseurl%>edit-user"><strong title="update your details"><%=sessionUserFullName%></strong></a>                  
+                </span>
+                <span class="user-role"> <b><%= sessionUserEmail.length > 23 ? (sessionUserEmail).substring(0, 23) + '...' : sessionUserEmail %></b></span>
+                <span class="user-status">
+                    <a href="<%=adminbaseurl%>logout">Changed Password</a> |
+                    <a href="<%=adminbaseurl%>logout">Sign Out</a>
+                </span>
+            </div>
+        </div>
+
+        <div class="sidebar-menu">
+            <ul>
+                <li class="sidebar-menu">
+                    <a href="<%=adminbaseurl%>dashboard">
+                        <i class="fa fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu">
+                    <a href="<%=adminbaseurl%>developer">
+                        <i class="fa fa-users"></i>
+                        <span>Developers</span>
+                    </a>                    
+                </li>
+
+                <li class="sidebar-menu">
+                    <a href="<%=adminbaseurl%>project">
+                        <i class="fa fa-book"></i>
+                        <span>Projects</span>
+                    </a>                    
+                </li>
+                    
+                
+            </ul>
+        </div>
+        <!-- sidebar-menu  -->
+    </div>
+</nav>
+

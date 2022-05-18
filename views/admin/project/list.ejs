@@ -1,0 +1,126 @@
+<%- include ('../layouts/header') %>
+<%- include ('../layouts/sidebar') %>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
+<link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons">
+
+<link rel="stylesheet" type="text/css" href="../../../admin/assets/css/project.css">
+
+<main class="page-content">
+  <div class="container-fluid">
+    <h2><%=title%></h2>           
+    <div> 
+      <button id="addProject"  type="button" class="btn btn-primary" data-toggle="modal" data-target="#basicModal" style="background-color: #ccc;"> 
+          Add Project
+      </button>        
+      <%- include ('../flashMessage') %>
+    </div>
+    <hr>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-2 npdes1">
+        <!-- Category -->
+        <div class="single category">
+          <ul class="list-unstyled">
+            <% var i=1; proArray.forEach(val=>{ %>
+              <li style="border: 6px solid;border-color: transparent;">
+                <a href="<%=adminbaseurl%>project/<%= val.id %>" title="" style="text-decoration: none;"><%= i++%>. <%= val.name %></a></li>
+            <% }) %>
+          </ul>
+        </div>
+      </div>
+  
+  
+      <div class="col-sm-10">
+        <!-- Category -->
+        <div class="single category">
+          <% if(projectData){%>
+              <h4 style="display: inline-block;"> <%= projectData.project_name %> </h4>
+                <div class="row rowSwitch"> 
+                  <div class="material-switch pull-right">
+                    <% if(projectData.status == 'Inactive'){ %>
+                      <button class="inactiveStatus"><i class="fa fa-times-circle"></i> Inactive</button>
+                    <% }else{ %>
+                      <button class="activeStatus"><i class="fa fa-check-circle"></i> Active</button>
+                    <% } %>
+                  </div>
+                </div>
+              <p><%= projectData.project_des %></p>
+              <hr>
+              <h4 style="display: inline-block;"> Assign Developer </h4>
+              <button class="activeStatus"><i class="fa fa-plus-circle"></i> Add Developer</button>
+              <div class="row">
+                <!-- Team member -->
+                <div class="col-xs-12 col-sm-6 col-md-4">
+                    <div class="image-flip" >
+                        <div class="mainflip flip-0">
+                            <div class="frontside">
+                              <% if(assignDev.length > 0){ %>
+                                <div class="card">
+                                  <div class="card-body text-center">
+                                      <p><img class=" img-fluid" src="https://sunlimetech.com/portfolio/boot4menu/assets/imgs/team/img_01.png" alt="card image"></p>
+                                      <h4 class="card-title">Sunlimetech</h4>
+                                      <p class="card-text">This is basic card with image on top, title, description and button.</p>
+                                      <a href="https://www.fiverr.com/share/qb8D02" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
+                                  </div>
+                              </div>
+                              <% } %>                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              </div>
+          <% } %>
+        </div>
+      </div>  
+    </div>
+  </div>
+
+   
+
+
+<!--Modal start here-->
+<div class="container">
+  <!-- basic modal -->
+  <div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h6 class="modal-title" id="myModalLabel" style="color: #149e91;">ADD NEW PROJECT</h6>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="/admin/add-project" class="form-horizontal" method="post">
+            <div class="modal-body">
+                <div id="div_id_project" class="form-group required">
+                    <label for="id_project" class="control-label col-md-4  requiredField"><b>Project Name</b></label>
+                    <div class="controls col-md-12 ">
+                        <input class="input-md  textinput form-control" id="id_project" name="project" style="margin-bottom: 10px" type="text" />
+                    </div>
+                </div>
+
+                <div id="div_id_project_des" class="form-group required">
+                    <label for="id_project_des" class="control-label col-md-8  requiredField"><b> Project Description</b></label>
+                    <div class="controls col-md-12 ">
+                        <textarea class="input-md  textinput form-control" id="id_project_des" name="project_des" ></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">ADD</button>
+            </div>
+        </form>            
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+
+
+
+<%- include ('../layouts/footer') %>
+
+
