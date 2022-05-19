@@ -57,7 +57,7 @@ router.use(expressValidator())
 
 
 async function middleHandler(req, res, next) {
-    models.Users.findOne({ where: { username: (req.session.user.username) } }).then(async function (user) {
+    await models.Users.findOne({ where: { username: (req.session.user.username) } }).then(async function (user) {
         if (user) {
             res.locals.sessionUserFullName = user.name;
             res.locals.sessionUserImage = user.image;
@@ -88,12 +88,13 @@ router.get('/register', checkLoggedInAdmin, auth.loadRegisterPage);
 router.post('/register', checkLoggedInAdmin, auth.addNewUser);
 
 const dashboard = require('../controller/admin/dashboardController');
-router.get('/dashboard', checkAdminLogin, middleHandler, dashboard.loadDashboardPage);
+router.get('/dashboard', checkAdminLogin,  middleHandler, dashboard.loadDashboardPage);
 
 
 const user = require('../controller/admin/userController');
 router.get('/edit-user', checkAdminLogin, middleHandler, user.loadEditUserPage);
 router.get('/developer', checkAdminLogin, middleHandler, user.loadDeveloperPage);
+router.get('/developer/:user_id?', checkAdminLogin, middleHandler, user.loadDeveloperEditPage);
 
 
 const project = require('../controller/admin/projectController');

@@ -86,10 +86,30 @@ exports.addNewProject = async function(req,res){
 
 
 exports.addDevForProject = async function(req,res){
-    console.log(req.query.projectId);
     var getExistUser = await models.UserProject.findAll({where:{project_id : req.query.projectId}});
-    console.log(getExistUser);
-    var userListArray = [];
-    var UserList = await models.Users.findAll({where :{id: {[Op.notIn]:[]}}})
+    var getExistUserArray = [];
+    getExistUser.forEach(element => {
+        getExistUserArray.push(element.user_id)
+    });
+    var getDevRole = await models.Role.findOne({attributes : ['role_id'], where:{role_name : 'Developer'}});
+    getExistUserArray.push(getDevRole.role_id);
+    getExistUserArray.push(req.session.user.user_id);
+    var uniqueGetExistUserArray = [...new Set(getExistUserArray)];
+    console.log(getExistUserArray);
+    console.log(uniqueGetExistUserArray);
+    var UserList = await models.Users.findAll({where :{user_id: {[Op.notIn]:uniqueGetExistUserArray}}});
+    
+    if(UserList.length > 0){
+        res.send({
+            status : true,
+            data : UserList
+        })
+    }else{
+        res.send({
+            status : false,
+            data : ''
+        })
+    }
+
 
 }

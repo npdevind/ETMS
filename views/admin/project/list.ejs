@@ -79,7 +79,7 @@
    
 
 
-<!--Modal start here-->
+<!--Add new project Modal start here-->
 <div class="container">
   <!-- basic modal -->
   <div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
@@ -115,6 +115,43 @@
     </div>
   </div>
 </div>
+
+
+<!--Add User in project Modal start here-->
+<div class="container">
+  <!-- basic modal -->
+  <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h6 class="modal-title" id="myModalLabel" style="color: #149e91;">SELECT USERS</h6>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="/admin/add-project" class="form-horizontal" method="post">
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Select</th>
+                  </tr>
+                </thead>
+                <tbody id="addUserTbody">
+                  
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">ADD</button>
+            </div>
+        </form>            
+      </div>
+    </div>
+  </div>
+</div>
     
 <script>
   $('#addDeveloper').click(function(){
@@ -124,6 +161,18 @@
       data :  {projectId : projectId}, 
       success: function(result){
         console.log(result);
+        if(result.status == true){
+          $("#addUserModal").modal('show');
+          $.each(result.data, function(i, item) {
+            var $tr = $('<tr>').append(
+                $('<td>').text(item.name),
+                $('<td>').text(item.email),
+                $('<input class="form-control" type="checkbox" value="'+item.user_id+'" name="selectedUser" style="position: relative;top: 16px;cursor: pointer;">')
+            ).appendTo('#addUserTbody');
+          });
+        }else{
+          $("#addUserModal").modal('show');
+        }
     }});
   })
 </script>

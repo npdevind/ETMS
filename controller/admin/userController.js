@@ -35,7 +35,7 @@ exports.loadEditUserPage = async function(req,res){
 
 exports.loadDeveloperPage = async function(req,res){
     // var userTableDetails = await models.Users.findAll({where: {role: { [Op.not]: 2}}});
-    var userTableDetails = await sequelize.query("select a.name, a.email, b.role_name, a.status from users as a "+
+    var userTableDetails = await sequelize.query("select a.user_id, a.name, a.email, b.role_name, a.status from users as a "+
     "left join role as b on a.role = b.role_id where a.role != 2",{ type: Sequelize.QueryTypes.SELECT })
     if(userTableDetails){
         return res.render('admin/user/developer_list', {
@@ -46,4 +46,27 @@ exports.loadDeveloperPage = async function(req,res){
             helper: helper
         })
     }
+}
+
+exports.loadDeveloperEditPage = async function(req,res){
+    console.log(req.params.user_id);
+    var arrUserData = await models.Users.findAll({where :{user_id : req.params.user_id}});
+    if(arrUserData.length > 0){
+        return res.render('admin/user/developer_addedit', {
+            title:'Update Developer',
+            s_msg: req.flash('info'),
+            e_msg: req.flash('err'),
+            helper: helper,
+            arrUserData : arrUserData[0]
+        })
+    }else{
+        return res.render('admin/user/developer_addedit', {
+            title:'Update Developer',
+            s_msg: req.flash('info'),
+            e_msg: req.flash('err'),
+            helper: helper,
+            arrUserData : ''
+        })
+    }
+    
 }
