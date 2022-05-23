@@ -101,8 +101,9 @@ const project = require('../controller/admin/projectController');
 router.get('/project/:id?', checkAdminLogin, middleHandler, project.loadProjectPage);
 router.post('/add-project', checkAdminLogin, middleHandler, project.addNewProject);
 router.get('/add-developer-for-project', checkAdminLogin, middleHandler, project.addDevForProject);
-
-
+router.post('/post-add-developer-for-project', checkAdminLogin, middleHandler, project.addDevForProjectPost);
+router.get('/remove-dev-from-project/:uid/:pid?',checkAdminLogin, middleHandler, project.removeDevFromProject )
+router.get('/update-project-status', checkAdminLogin, middleHandler, project.updateProjectStatus);
 
 
 module.exports = router;

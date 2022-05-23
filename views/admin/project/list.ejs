@@ -39,10 +39,11 @@
               <h4 style="display: inline-block;"> <%= projectData.project_name %> </h4>
                 <div class="row rowSwitch"> 
                   <div class="material-switch pull-right">
+                    <input type="hidden" id="pro_status" value="<%= projectData.status %>" data_pro_id="<%= projectData.project_id  %>">
                     <% if(projectData.status == 'Inactive'){ %>
-                      <button class="inactiveStatus"><i class="fa fa-times-circle"></i> Inactive</button>
+                      <button class="inactiveStatus checkedProjectStatus" title="click for active" onclick="return confirm('Are you sure?')"><i class="fa fa-times-circle"></i> Inactive</button>
                     <% }else{ %>
-                      <button class="activeStatus"><i class="fa fa-check-circle"></i> Active</button>
+                      <button class="activeStatus checkedProjectStatus" title="click for inactive" onclick="return confirm('Are you sure?')"><i class="fa fa-check-circle"></i> Active</button>
                     <% } %>
                   </div>
                 </div>
@@ -51,32 +52,35 @@
               <h4 style="display: inline-block;"> Assign Developer </h4>
               <button class="activeStatus" id="addDeveloper" data_pro_id="<%= projectData.project_id  %>"><i class="fa fa-plus-circle"></i> Add Developer</button>
               <div class="row">
-                <!-- Team member -->
-                <div class="col-xs-12 col-sm-6 col-md-4">
-                    <div class="image-flip" >
+                <!-- Team member -->               
+                <% if(assignDev.length > 0){ %>
+                  <% assignDev.forEach(val=>{ %>
+                    <div class="col-xs-12 col-sm-6 col-md-4">
+                      <div class="image-flip" >
                         <div class="mainflip flip-0">
-                            <div class="frontside">
-                              <% if(assignDev.length > 0){ %>
-                                <div class="card">
-                                  <div class="card-body text-center">
-                                      <p><img class="img-fluid" src="" alt="card image"></p>
-                                      <h4 class="card-title">Sunlimetech</h4>
-                                      <p class="card-text">This is basic card with image on top, title, description and button.</p>
-                                  </div>
-                                </div>
-                              <% } %>                                
-                            </div>
+                          <div class="frontside">
+                            <div class="card">
+                              <div class="card-body text-center">                                      
+                                  <!-- <p><img class="img-fluid" src="" alt="card image"></p> -->
+                                  <h4 class="card-title"><%= val.name %></h4>
+                                  <p class="card-text"><%= val.email %></p>
+                              </div>                                    
+                              <button class="removeDev" title="remove from project" onclick="return confirm('Are you sure to remove?')"> <a href="/admin/remove-dev-from-project/<%= val.user_id %>/<%= projectData.project_id  %>" style="color: #c31313;"> <i class="fa fa-trash"></i></a></button>
+                            </div>                           
+                          </div>
                         </div>
+                      </div>
                     </div>
-                </div>
+                  <% }) %>
+                <% } %>     
               </div>
-          <% } %>
+            <% } %>
         </div>
       </div>  
     </div>
   </div>
 
-   
+  
 
 
 <!--Add new project Modal start here-->
@@ -129,7 +133,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form action="/admin/add-project" class="form-horizontal" method="post">
+        <form action="/admin/post-add-developer-for-project" class="form-horizontal" method="post">
             <div class="modal-body">
               <table class="table">
                 <thead>
@@ -144,8 +148,10 @@
                 </tbody>
               </table>
             </div>
+            <input type="hidden" class="btn btn-info" id="btnGet" value="">
+            <input type="hidden" name="add_dev_project_id" value="<%= projectData.project_id  %>">
             <div class="modal-footer">
-              <button type="submit" class="btn btn-primary">ADD</button>
+              <button type="submit" class="btn btn-primary" id="addDev">ADD</button>
             </div>
         </form>            
       </div>
@@ -167,14 +173,42 @@
             var $tr = $('<tr>').append(
                 $('<td>').text(item.name),
                 $('<td>').text(item.email),
-                $('<input class="form-control" type="checkbox" value="'+item.user_id+'" name="selectedUser" style="position: relative;top: 16px;cursor: pointer;">')
+                $('<input class="form-control selectedUserClass" type="checkbox" value="'+item.user_id+'"  name="selectedUser" style="position: relative;top: 16px;cursor: pointer;">')
             ).appendTo('#addUserTbody');
+            
           });
         }else{
           $("#addUserModal").modal('show');
         }
     }});
   })
+
+  $('#addUserModal').on('hidden.bs.modal', function () {
+    if (!$('#myModal').hasClass('no-reload')) {
+        location.reload();
+    }
+  });
+
+$('#addDev').click(function() {
+  var checkedDev = $('.selectedUserClass:checked').map(function() {return this.value;}).get().join(',');
+  $('#btnGet').val(checkedDev);
+});
+
+
+$('.checkedProjectStatus').click(function(){
+  var pro_status =  $('#pro_status').val();
+  var pro_id = $('#pro_status').attr('data_pro_id');
+  $.ajax({
+      url: "<%= adminbaseurl %>update-project-status",
+      data :  {pro_id : pro_id, pro_status : pro_status}, 
+      success: function(result){
+        console.log(result);
+        if(result.status == true){
+          location.reload();
+        }
+    }});
+})
+  
 </script>
 
 

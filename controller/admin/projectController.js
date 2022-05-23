@@ -21,7 +21,7 @@ var sequelize = new Sequelize(
 
 exports.loadProjectPage = async function(req,res){
     
-    var projectTableDetails = await models.Projects.findAll();
+    var projectTableDetails = await models.Projects.findAll({order: [['project_name', 'ASC']]});
     var proArray = [];
     projectTableDetails.forEach(element => {
         proArray.push({
@@ -74,7 +74,7 @@ exports.addNewProject = async function(req,res){
                 req.flash('info','Successfully Created');
                 return res.redirect('project'); 
             }else{
-                req.flash('error','Something worng! Please try again.');
+                req.flash('error','Something wrong! Please try again.');
                 return res.redirect('project'); 
             }
         })
@@ -95,8 +95,6 @@ exports.addDevForProject = async function(req,res){
     getExistUserArray.push(getDevRole.role_id);
     getExistUserArray.push(req.session.user.user_id);
     var uniqueGetExistUserArray = [...new Set(getExistUserArray)];
-    console.log(getExistUserArray);
-    console.log(uniqueGetExistUserArray);
     var UserList = await models.Users.findAll({where :{user_id: {[Op.notIn]:uniqueGetExistUserArray}}});
     
     if(UserList.length > 0){
@@ -110,6 +108,75 @@ exports.addDevForProject = async function(req,res){
             data : ''
         })
     }
+}
+
+exports.addDevForProjectPost = async function(req,res){
+    if(req.body.selectedUser){
+        var dev = req.body.selectedUser;
+        dev = dev.toString().split(",");
+        jsonCreateData = [];
+        dev.forEach(element => {
+            jsonCreateData.push({
+                project_id : req.body.add_dev_project_id,
+                user_id : element
+            })
+        });
+        models.UserProject.bulkCreate(jsonCreateData).then(function(crt){
+            if(crt){
+                req.flash('info',"Developers added successfully.");
+                return res.redirect("project/"+req.body.add_dev_project_id);
+            }else{
+                req.flash('error','Something wrong! Please try again.');
+                return res.redirect("project/"+req.body.add_dev_project_id); 
+            }
+        })        
+    }else{
+        req.flash('err',"Please select developer.");
+        return res.redirect("project/"+req.body.add_dev_project_id);
+    }
+}
+
+exports.removeDevFromProject = async function(req,res){
+    if(req.params.uid && req.params.pid){
+        models.UserProject.destroy({where:{project_id : req.params.pid, user_id : req.params.uid}}).then(function(det){
+            if(det){
+                req.flash('info',"Developers successfully remove.");
+                return res.redirect('back');
+            }else{
+                req.flash('error','Something wrong! Please try again.');
+                return res.redirect('back'); 
+            }
+        })
+    }else{
+        req.flash('error','Something wrong! Please try again.');
+        return res.redirect('back'); 
+    }
+}
 
 
+exports.updateProjectStatus = async function(req,res){
+    if(req.query.pro_id && req.query.pro_status){
+        await models.Projects.update({
+            status: (req.query.pro_status == 'Active') ? 'Inactive' : 'Active'
+         },{ where: { project_id: req.query.pro_id } 
+        }).then(async function(upd){
+            if(upd){
+                var projectName = await models.Projects.findOne({attributes : ['project_name'], where:{project_id: req.query.pro_id}});
+                res.send({
+                    status : true,
+                    projectName : projectName
+                })
+            }else{
+                res.send({
+                    status : false,
+                    projectName : ''
+                })
+            }
+        })
+    }else{
+        res.send({
+            status : false,
+            projectName : ''
+        })
+    }
 }

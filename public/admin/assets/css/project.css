@@ -36,3 +36,12 @@
     bottom: 5px;
 
   }
+
+  .removeDev{
+    border: none;
+    background-color: transparent;
+    position: relative;
+    bottom: 7px;
+    color: #c31313;
+    cursor:pointer;
+  }
