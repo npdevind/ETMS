@@ -17,7 +17,7 @@
       <%=title%>
     </h2>
     <div>
-      <a href="<%=adminbaseurl%>admin-user/list"> Admin List </a>
+      <a href="<%=adminbaseurl%>developer"> Developer List </a>
       <%- include ('../flashMessage') %>
     </div>
     <hr>
@@ -147,7 +147,7 @@
           <div class="col-md-6">
             <div class="form-group">
               <div class="input-group mb-2 mr-sm-2">
-                <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-phone"></i></div>
+                <div class="input-group-addon" style="width: 2.6rem"></div>
                 <input type="file" class="form-group" id="image" name="image" accept="image/*" onchange="preView()"
                   value="<%= arrUserData ? arrUserData.image : '' %>">
                 <% if(arrUserData.image !='' && arrUserData.image != null){%>

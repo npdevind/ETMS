@@ -4,16 +4,31 @@
 <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons">
 
+
 <main class="page-content">
     <div class="container-fluid">
       <h2><%=title%></h2>
       <div>
-          <a href="<%=adminbaseurl%>developer"> Add Developer </a>
+          <a href="<%=adminbaseurl%>developer"> Add Developer </a>          
           <%- include ('../flashMessage') %>
       </div>
+        <div class="row col-sm-12 filterSelect">
+            <div class="col-md-4">
+                <select class="form-control">
+                    <option value="" selected disabled>Select</option>
+                    <option value="name">Name</option>
+                    <option value="email">Email</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <input type="text" name="filterValue" id="filterValue" value="" placeholder="name/email" class="form-control">
+            </div>           
+            
+            <button type="submit">Search</button>
+        </div>
       <hr>
       <div class="table-responsive">
-          <table class="table">
+          <table id="developerList" class="table" cellspacing="0" width="100%">
               <thead>
                   <tr>
                       <th class="text-center">SL</th>
@@ -38,7 +53,7 @@
                           <td class="text-center"><%= val.name %></td>
                           <td class="text-center"><%= val.email %></td>
                           <td class="text-center"><%= val.role_name %></td>
-                          <td class="text-center"><%= val.status %></td>
+                          <td class="text-center"><button> <%= val.status %> </button> </td>
                           <td class="text-center">
                           <a rel="tooltip" class="btn btn-success btn-just-icon btn-sm"
                               href="<%= adminbaseurl%>developer/<%= val.user_id %>" data-original-title="" title="">
@@ -57,3 +72,13 @@
           </table>
       </div>
 <%- include ('../layouts/footer') %>
+
+<style>
+    .filterSelect{
+        float: right;
+        position: relative;
+        bottom: 33px;
+        max-width: 42%;
+    }
+</style>
+
