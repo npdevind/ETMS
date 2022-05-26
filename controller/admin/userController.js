@@ -9,7 +9,7 @@ var sequelize = new Sequelize(
     config.development.password, {
     host: 'localhost',
     dialect: 'postgres',
-    logging: false,
+    logging: true,
     pool: 
     {
         max: 5,
@@ -36,7 +36,7 @@ exports.loadEditUserPage = async function(req,res){
 exports.loadDeveloperPage = async function(req,res){
     // var userTableDetails = await models.Users.findAll({where: {role: { [Op.not]: 2}}});
     var userTableDetails = await sequelize.query("select a.user_id, a.name, a.email, b.role_name, a.status from users as a "+
-    "left join role as b on a.role = b.role_id where a.role != 2",{ type: Sequelize.QueryTypes.SELECT })
+    "left join role as b on a.role = b.role_id where a.role != 2 order by name asc",{ type: Sequelize.QueryTypes.SELECT })
     if(userTableDetails){
         return res.render('admin/user/developer_list', {
             userTableDetails:userTableDetails,
@@ -69,4 +69,28 @@ exports.loadDeveloperEditPage = async function(req,res){
         })
     }
     
+}
+
+exports.updateDeveloperStatus = async function(req,res){
+    if(req.query.id){
+        var getPreviousStatus = await models.Users.findOne({attributes:['status'],where:{user_id : req.query.id}});
+        await models.Users.update({ status : (getPreviousStatus.status == 'No') ? 'Yes' : 'No' },{ where: { user_id : req.query.id}}).then(function(upd){
+            if(!upd){
+                return res.send({
+                    status :  false,
+                    msg : 'Something Wrong! Please update throw edit page.'
+                })
+            }else{
+                return res.send({
+                    status :  true,
+                    msg : ''
+                })
+            }
+        })
+    }else{
+        return res.send({
+            status :  false,
+            msg : 'Something Wrong! Please update throw edit page.'
+        })
+    }
 }

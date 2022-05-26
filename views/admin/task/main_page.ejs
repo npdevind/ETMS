@@ -1,0 +1,140 @@
+<%- include ('../layouts/header') %>
+<%- include ('../layouts/sidebar') %>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
+<link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons">
+
+
+<main class="page-content">
+    <div class="container-fluid">
+      <h2><%=title%></h2>           
+      <div> 
+        <button id="addProject"  type="button" class="btn btn-primary" data-toggle="modal" data-target="#basicModal" style="background-color: #ccc;"> 
+            Add Task
+        </button>        
+        <%- include ('../flashMessage') %>
+      </div>
+      <hr>
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="pull-right">
+                <div class="btn-group">
+                    <% projects.forEach(val=>{ %>
+                        <button type="button" class="btn btn-primary"><%= val.project_name%></button>
+                    <% }) %>
+                </div>
+            </div>
+            <div class="table-container">
+                <table class="table table-filter">
+                    <tbody>
+                        <tr data-status="pagado">
+                            
+                            <td>
+                                <div class="media">
+                                   
+                                    <div class="media-body">
+                                        <span class="media-meta pull-right">Febrero 13, 2016</span>
+                                        <h4 class="title">
+                                            Lorem Impsum
+                                            <span class="pull-right pagado">(Pagado)</span>
+                                        </h4>
+                                        <p class="summary">Ut enim ad minim veniam, quis nostrud exercitation...</p>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <style>
+        /*	--------------------------------------------------
+	:: Table Filter
+	-------------------------------------------------- */
+
+/* .panel .btn-group {
+	margin: 15px 0 30px;
+} */
+.panel .btn-group .btn {
+	transition: background-color .3s ease;
+}
+.table-filter {
+	background-color: #fff;
+	border-bottom: 1px solid #eee;
+}
+.table-filter tbody tr:hover {
+	cursor: pointer;
+	background-color: #eee;
+}
+.table-filter tbody tr td {
+	padding: 10px;
+	vertical-align: middle;
+	border-top-color: #eee;
+}
+.table-filter tbody tr.selected td {
+	background-color: #eee;
+}
+.table-filter tr td:first-child {
+	width: 38px;
+}
+.table-filter tr td:nth-child(2) {
+	width: 35px;
+}
+.table-filter .star {
+	color: #ccc;
+	text-align: center;
+	display: block;
+}
+.table-filter .star.star-checked {
+	color: #F0AD4E;
+}
+.table-filter .star:hover {
+	color: #ccc;
+}
+.table-filter .star.star-checked:hover {
+	color: #F0AD4E;
+}
+.table-filter .media-photo {
+	width: 35px;
+}
+.table-filter .media-body {
+    display: block;
+    /* Had to use this style to force the div to expand (wasn't necessary with my bootstrap version 3.3.6) */
+}
+.table-filter .media-meta {
+	font-size: 11px;
+	color: #999;
+}
+.table-filter .media .title {
+	color: #2BBCDE;
+	font-size: 14px;
+	font-weight: bold;
+	line-height: normal;
+	margin: 0;
+}
+.table-filter .media .title span {
+	font-size: .8em;
+	margin-right: 20px;
+}
+.table-filter .media .title span.pagado {
+	color: #5cb85c;
+}
+.table-filter .media .title span.pendiente {
+	color: #f0ad4e;
+}
+.table-filter .media .title span.cancelado {
+	color: #d9534f;
+}
+.table-filter .media .summary {
+	font-size: 14px;
+}
+    </style>
+
+
+
+<%- include ('../layouts/footer') %>

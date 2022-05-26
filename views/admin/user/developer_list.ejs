@@ -5,6 +5,8 @@
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons">
 
 
+<link rel="stylesheet" type="text/css" href="../../../admin/assets/css/dev_list.css">
+
 <main class="page-content">
     <div class="container-fluid">
       <h2><%=title%></h2>
@@ -12,7 +14,7 @@
           <a href="<%=adminbaseurl%>developer"> Add Developer </a>          
           <%- include ('../flashMessage') %>
       </div>
-        <div class="row col-sm-12 filterSelect">
+        <!-- <div class="row col-sm-12 filterSelect">
             <div class="col-md-4">
                 <select class="form-control">
                     <option value="" selected disabled>Select</option>
@@ -25,7 +27,7 @@
             </div>           
             
             <button type="submit">Search</button>
-        </div>
+        </div> -->
       <hr>
       <div class="table-responsive">
           <table id="developerList" class="table" cellspacing="0" width="100%">
@@ -45,7 +47,7 @@
                   <tr>
                       <td class="text-center"><%= i; %> <%! i++; %> </td>
                       <td class="text-center"> <%
-                          var image = 'Developer/'+val.dev_id+'/'+val.image;
+                          var image = 'Developer/'+val.user_id+'/'+val.image;
                           if(helper.isFileExistsIn(image)) image = adminbaseurl +'web-contents/'+  image;
                           else image = baseurl + "user.png";
                           %>
@@ -53,7 +55,25 @@
                           <td class="text-center"><%= val.name %></td>
                           <td class="text-center"><%= val.email %></td>
                           <td class="text-center"><%= val.role_name %></td>
-                          <td class="text-center"><button> <%= val.status %> </button> </td>
+                          <td class="text-center">
+                               <!-- <%= val.status %>  -->
+                              <% if(val.status == 'Yes'){ %>
+                                <label class="switch">
+                                    <input type="checkbox" checked  class="devStatusChanged" data_id = "<%= val.user_id %>" onclick="return confirm('Are you sure?')">
+                                    <span class="slider round"></span>
+                                  </label>
+                              <% }else if(val.status == 'No'){ %>
+                                <label class="switch">
+                                    <input type="checkbox" class="devStatusChanged" data_id = "<%= val.user_id %>" onclick="return confirm('Are you sure?')">
+                                    <span class="slider round"></span>
+                                </label>
+                              <% }else if(val.status == 'Blocked'){ %>
+                                <label class="switch">
+                                    <input type="checkbox" checked onclick="return confirm('This developer is blocked. Please go to edit option for unblock.')">
+                                    <span class="slider round" style="background-color:rgb(200, 3, 3);"></span>
+                                </label>
+                              <% } %>
+                            </td>
                           <td class="text-center">
                           <a rel="tooltip" class="btn btn-success btn-just-icon btn-sm"
                               href="<%= adminbaseurl%>developer/<%= val.user_id %>" data-original-title="" title="">
@@ -73,12 +93,23 @@
       </div>
 <%- include ('../layouts/footer') %>
 
-<style>
-    .filterSelect{
-        float: right;
-        position: relative;
-        bottom: 33px;
-        max-width: 42%;
-    }
-</style>
+<script>
+    $('.devStatusChanged').click(function(){  
+        $.ajax({
+            url: "<%= adminbaseurl %>update-developer-status",
+            data :  {id : $(this).attr('data_id')}, 
+            success: function(result){
+                console.log(result);
+                if(result.status == true){
+                    location.reload();
+                }else{
+                    alert(result.msg);
+                    location.reload();
+                }
+            }
+        });
+    })
+</script>
+
+
 

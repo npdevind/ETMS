@@ -27,31 +27,51 @@
             </div>
         </div>
 
-        <div class="sidebar-menu">
-            <ul>
-                <li class="sidebar-menu">
-                    <a href="<%=adminbaseurl%>dashboard">
-                        <i class="fa fa-home"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li class="sidebar-menu">
-                    <a href="<%=adminbaseurl%>developer">
-                        <i class="fa fa-users"></i>
-                        <span>Developers</span>
-                    </a>                    
-                </li>
-
-                <li class="sidebar-menu">
-                    <a href="<%=adminbaseurl%>project">
-                        <i class="fa fa-book"></i>
-                        <span>Projects</span>
-                    </a>                    
-                </li>
+        <% if(sessionUserRoleName == 'Administrator'){ %>
+            <div class="sidebar-menu">
+                <ul>
+                    <li class="sidebar-menu">
+                        <a href="<%=adminbaseurl%>dashboard">
+                            <i class="fa fa-home"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
                     
-                
-            </ul>
-        </div>
+                    <li class="sidebar-menu">
+                        <a href="<%=adminbaseurl%>developer">
+                            <i class="fa fa-users"></i>
+                            <span>Developers</span>
+                        </a>                    
+                    </li>
+    
+                    <li class="sidebar-menu">
+                        <a href="<%=adminbaseurl%>project">
+                            <i class="fa fa-book"></i>
+                            <span>Projects</span>
+                        </a>                    
+                    </li>
+                </ul>
+            </div>   
+        <% }else if(sessionUserRoleName == 'Developer' ){ %>
+            <div class="sidebar-menu">
+                <ul>
+                    <li class="sidebar-menu">
+                        <a href="<%=adminbaseurl%>dashboard">
+                            <i class="fa fa-home"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-menu">
+                        <a href="<%=adminbaseurl%>task">
+                            <i class="fa fa-briefcase"></i>
+                            <span>Task</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>   
+        <% } %>
+        
         <!-- sidebar-menu  -->
     </div>
 </nav>
