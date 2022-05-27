@@ -7,59 +7,110 @@
 
 <main class="page-content">
     <div class="container-fluid">
-      <h2><%=title%></h2>           
-      <div> 
-        <button id="addProject"  type="button" class="btn btn-primary" data-toggle="modal" data-target="#basicModal" style="background-color: #ccc;"> 
-            Add Task
-        </button>        
+      <h2><%=title%></h2> 
+        <button type="button" class="btn btn-primary projectFilter">All</button>
+        <% projects.forEach(val=>{ %>
+            <button type="button" class="btn btn-primary projectFilter"><%= val.project_name%></button>
+        <% }) %>
         <%- include ('../flashMessage') %>
-      </div>
       <hr>
 
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <div class="pull-right">
-                <div class="btn-group">
-                    <% projects.forEach(val=>{ %>
-                        <button type="button" class="btn btn-primary"><%= val.project_name%></button>
-                    <% }) %>
-                </div>
-            </div>
-            <div class="table-container">
-                <table class="table table-filter">
-                    <tbody>
-                        <tr data-status="pagado">
-                            
-                            <td>
-                                <div class="media">
-                                   
-                                    <div class="media-body">
-                                        <span class="media-meta pull-right">Febrero 13, 2016</span>
-                                        <h4 class="title">
-                                            Lorem Impsum
-                                            <span class="pull-right pagado">(Pagado)</span>
-                                        </h4>
-                                        <p class="summary">Ut enim ad minim veniam, quis nostrud exercitation...</p>
+   
+    <div class="row">
+        <div class="col-md-4">
+            <table class="table table-striped">
+                <tbody>
+                    <tr>
+                        <td>
+                            <form class="well form-horizontal">
+                                <fieldset>                                    
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <select class="selectpicker form-control">
+                                                <option>0</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                        </tr>
-                        
-                    </tbody>
-                </table>
-            </div>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <input id="module_name" name="module_name" placeholder="Module Name" class="form-control" required="true" value="" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <textarea id="task_name" name="task_name" placeholder="Task" class="form-control" required="true" value="" type="text"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <input id="start_time" name="start_time" placeholder="Start Time" class="form-control" required="true" value="" type="time">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <input id="end_time" name="end_time" placeholder="End Time" class="form-control" required="true" value="" type="time">
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <input type="submit" value="Submit" class="sumitFrom">
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-    </div>
+
+        <div class="col-md-8 table-container">
+            <table class="table table-filter">
+                <tbody>
+                    <tr data-status="pagado">                            
+                        <td>
+                            <div class="media">                                   
+                                <div class="media-body">
+                                    <span class="media-meta pull-right">Febrero 13, 2016</span>
+                                    <h4 class="title">
+                                        Lorem Impsum
+                                        <span class="pull-right pagado">(Pagado)</span>
+                                    </h4>
+                                    <p class="summary">Ut enim ad minim veniam, quis nostrud exercitation...</p>
+                                </div>
+                            </div>
+                        </td>
+    
+                        <td>
+                            view
+                        </td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>       
+
+    
 
 
-    <style>
-        /*	--------------------------------------------------
-	:: Table Filter
-	-------------------------------------------------- */
 
-/* .panel .btn-group {
-	margin: 15px 0 30px;
-} */
+
+<style>
+
+.sumitFrom{
+    float: right;
+    border: none;
+    background-color: #2bbce4;
+    padding: 9px;
+    border-radius: 5px;
+}
+
+.modal {
+  /* background: green; */
+  position: absolute;
+  float: left;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
 .panel .btn-group .btn {
 	transition: background-color .3s ease;
 }
